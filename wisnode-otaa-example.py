@@ -45,11 +45,11 @@ else:
 		print 'Seteando dev_eui'
 		print wisnode.rk_setConfig('dev_eui', devEUI)
 		time.sleep(0.1)
-		print 'Seteando app_eui'
-		print wisnode.rk_setConfig('app_eui', appEUI)
-		time.sleep(0.1)
 		print 'Seteando app_key'
 		print wisnode.rk_setConfig('app_key', appKEY)
+		time.sleep(0.1)
+		print 'Seteando app_eui'
+		print wisnode.rk_setConfig('app_eui', appEUI)
 
 	time.sleep(0.1)
 	print 'joining:'
