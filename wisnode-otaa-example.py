@@ -14,12 +14,12 @@ usb_num = args.usb
 TTN = args.network
 
 if TTN:
-	from secrets_otaa import TTN_devEUI as devEUI , TTN_appEUI as appEUI, TTN_appKEY as appKEY
 	print 'Usando TTN' 
+	from secrets_otaa import TTN_devEUI as devEUI, TTN_appEUI as appEUI, TTN_appKEY as appKEY
 else:
 	print 'Usando DASS'
-	from secrets_otaa import DASS_devEUI as devEUI , DASS_appEUI as appEUI, DASS_appKEY as appKEY  
- 
+	from secrets_otaa import DASS_devEUI as devEUI, DASS_appEUI as appEUI, DASS_appKEY as appKEY
+
 try:
 	wisnode = rak('ttyUSB{}'.format(usb_num))
 except SerialException as e:
@@ -39,7 +39,7 @@ else:
 	time.sleep(0.1)
 
 	if TTN:
-		print 'Seteando otaa:'
+		print 'Inicializando OTAA:'
 		print wisnode.rk_initOTAA(devEUI,appEUI,appKEY)
 	else:
 		print 'Seteando dev_eui'
@@ -53,21 +53,20 @@ else:
 
 	time.sleep(0.1)
 	print 'joining:'
-	print wisnode.rk_joinLoRaNetwork(0) # Otaa mode
-
-	recv = wisnode.read()
-	print recv
-	while recv != '{}\r\n'.format(STATUS_JOINED_SUCCESS):
-		print 'joining again:'
-		print wisnode.rk_joinLoRaNetwork(0) # Otaa mode
+	coso = 1;
+	while True:
+		print wisnode.rk_joinLoRaNetwork(0) # OTAA mode
 		recv = wisnode.read()
 		print recv
+		if recv == '{}\r\n'.format(STATUS_JOINED_SUCCESS):
+			break;
+		print 'joining again:'
 
 	while 1:
-		time.sleep(10)
 		print 'Sending data:'
 		print wisnode.rk_sendData(0,2,str(int(random.random() * 1000)))
 		print 'Leyendo de wisnode:'
 		print wisnode.read()
+		time.sleep(10)
 		
 		#print (wisnode.rk_getSignal())
