@@ -7,11 +7,13 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--usb', type=int,help='usb number. Default 0', default=0)
 parser.add_argument('--network', type=int,help='1 for ttn, 0 for dass. Default ttn', default=1)
+parser.add_argument('--confirmed', type=int,help='1 to send confirmed messages, 0 for unconfirmed. Default unconfirmed', default=0)
 #parser.print_help()
 
 args = parser.parse_args()
 usb_num = args.usb
 TTN = args.network
+confirmed = args.confirmed
 
 if TTN:
 	print 'Usando TTN' 
@@ -61,7 +63,7 @@ else:
 	time.sleep(1)
 	while 1:
 		print 'Sending data:'
-		print wisnode.rk_sendData(0,2,str(int(random.random() * 1000)))
+		print wisnode.rk_sendData(confirmed,2,str(int(random.random() * 1000)))
 		print 'Leyendo de wisnode:'
 		print wisnode.read()
 		time.sleep(10)
